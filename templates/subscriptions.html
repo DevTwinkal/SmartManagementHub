@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Subscriptions - Smart Management Hub{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Subscriptions</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{{ url_for('new_subscription') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Create Subscription
+        </a>
+    </div>
+</div>
+
+{% if subscriptions %}
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Customer</th>
+                        <th>Plan</th>
+                        <th>Status</th>
+                        <th>Start Date</th>
+                        <th>Next Billing</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for subscription in subscriptions %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-sm bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3">
+                                    {{ subscription.customer.full_name[0].upper() }}
+                                </div>
+                                <div>
+                                    <strong>{{ subscription.customer.full_name }}</strong><br>
+                                    <small class="text-muted">{{ subscription.customer.email }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <strong>{{ subscription.plan.name }}</strong><br>
+                                <small class="text-muted">${{ "%.2f"|format(subscription.plan.price) }} / {{ subscription.plan.billing_interval }}</small>
+                            </div>
+                        </td>
+                        <td>
+                            {% if subscription.status == 'active' %}
+                                <span class="badge bg-success">Active</span>
+                            {% elif subscription.status == 'canceled' %}
+                                <span class="badge bg-danger">Canceled</span>
+                            {% elif subscription.status == 'past_due' %}
+                                <span class="badge bg-warning">Past Due</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ subscription.status.title() }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ subscription.start_date.strftime('%b %d, %Y') }}</td>
+                        <td>
+                            {% if subscription.status == 'active' %}
+                                {{ subscription.next_billing_date.strftime('%b %d, %Y') }}
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if subscription.status == 'active' %}
+                                <a href="{{ url_for('cancel_subscription', subscription_id=subscription.subscription_id) }}" 
+                                   class="btn btn-outline-danger btn-sm"
+                                   onclick="return confirm('Are you sure you want to cancel this subscription?')">
+                                    <i class="fas fa-times me-1"></i>Cancel
+                                </a>
+                            {% else %}
+                                <span class="text-muted">No actions</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="text-center py-5">
+    <i class="fas fa-credit-card fa-4x text-muted mb-3"></i>
+    <h3 class="text-muted">No Subscriptions Yet</h3>
+    <p class="text-muted">Create your first subscription to start tracking revenue.</p>
+    <a href="{{ url_for('new_subscription') }}" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i>Create Your First Subscription
+    </a>
+</div>
+{% endif %}
+{% endblock %} 

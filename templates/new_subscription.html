@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Create Subscription - Smart Management Hub{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Create New Subscription</h1>
+    <a href="{{ url_for('subscriptions') }}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-2"></i>Back to Subscriptions
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-body p-4">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="customer_id" class="form-label">Customer</label>
+                        <select class="form-select" id="customer_id" name="customer_id" required>
+                            <option value="">Select a customer</option>
+                            {% for customer in customers %}
+                                <option value="{{ customer.customer_id }}" 
+                                        {% if request.args.get('customer_id')|int == customer.customer_id %}selected{% endif %}>
+                                    {{ customer.full_name }} ({{ customer.email }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="plan_id" class="form-label">Plan</label>
+                        <select class="form-select" id="plan_id" name="plan_id" required>
+                            <option value="">Select a plan</option>
+                            {% for plan in plans %}
+                                <option value="{{ plan.plan_id }}">
+                                    {{ plan.name }} - ${{ "%.2f"|format(plan.price) }} / {{ plan.billing_interval }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="start_date" class="form-label">Start Date</label>
+                        <input type="date" class="form-control" id="start_date" name="start_date" 
+                               value="{{ today }}" required>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Create Subscription
+                        </button>
+                        <a href="{{ url_for('subscriptions') }}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Set today's date as default
+document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('start_date').value = today;
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block auth_content %}
+<div class="container-fluid">
+    <div class="row min-vh-100">
+        <div class="col-lg-6 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bold mb-4">Welcome Back</h1>
+                <p class="lead">Sign in to manage your business subscriptions</p>
+            </div>
+        </div>
+        <div class="col-lg-6 d-flex align-items-center justify-content-center">
+            <div class="w-75">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <h2 class="text-center mb-4">Sign In</h2>
+                        <form method="POST">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">Sign In</button>
+                            </div>
+                        </form>
+                        <div class="text-center mt-4">
+                            <p class="mb-0">Don't have an account? <a href="{{ url_for('register') }}">Sign up here</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

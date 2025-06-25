@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block auth_content %}
+<div class="container-fluid">
+    <div class="row min-vh-100">
+        <div class="col-lg-6 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bold mb-4">Smart Management Hub</h1>
+                <p class="lead mb-4">The complete subscription management solution for small businesses</p>
+                <div class="row text-center">
+                    <div class="col-md-4 mb-3">
+                        <i class="fas fa-chart-line fa-3x mb-3"></i>
+                        <h5>Track Revenue</h5>
+                        <p class="small">Monitor MRR and growth metrics</p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <i class="fas fa-users fa-3x mb-3"></i>
+                        <h5>Manage Customers</h5>
+                        <p class="small">Organize customer data efficiently</p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <i class="fas fa-credit-card fa-3x mb-3"></i>
+                        <h5>Handle Billing</h5>
+                        <p class="small">Automated subscription billing</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 d-flex align-items-center justify-content-center">
+            <div class="w-75">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold">Get Started Today</h2>
+                    <p class="text-muted">Join thousands of businesses managing their subscriptions</p>
+                </div>
+                <div class="d-grid gap-3">
+                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-user-plus me-2"></i>Create Business Account
+                    </a>
+                    <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg">
+                        <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

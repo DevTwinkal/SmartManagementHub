@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Smart Management Hub{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Dashboard</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{{ url_for('run_billing') }}" class="btn btn-primary">
+            <i class="fas fa-sync me-2"></i>Run Billing Cycle
+        </a>
+    </div>
+</div>
+
+<!-- Key Metrics -->
+<div class="row mb-4">
+    <div class="col-md-4 mb-3">
+        <div class="card metric-card">
+            <div class="card-body text-center">
+                <i class="fas fa-dollar-sign fa-3x mb-3"></i>
+                <h3 class="card-title">${{ "%.2f"|format(mrr) }}</h3>
+                <p class="card-text">Monthly Recurring Revenue</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card metric-card">
+            <div class="card-body text-center">
+                <i class="fas fa-users fa-3x mb-3"></i>
+                <h3 class="card-title">{{ active_subscribers }}</h3>
+                <p class="card-text">Active Subscribers</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card metric-card">
+            <div class="card-body text-center">
+                <i class="fas fa-chart-line fa-3x mb-3"></i>
+                <h3 class="card-title">{{ churn_rate }}%</h3>
+                <p class="card-text">Churn Rate (This Month)</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-plus me-2"></i>Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('new_plan') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-tag me-2"></i>Create New Plan
+                    </a>
+                    <a href="{{ url_for('new_customer') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-user-plus me-2"></i>Add New Customer
+                    </a>
+                    <a href="{{ url_for('new_subscription') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-credit-card me-2"></i>Create Subscription
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Recent Activity</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">No recent activity to display.</p>
+                <p class="small text-muted">Activity tracking will be available in future updates.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- API Access -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-code me-2"></i>API Access</h5>
+            </div>
+            <div class="card-body">
+                <p>Access your dashboard metrics via our REST API:</p>
+                <code>GET {{ request.host_url }}api/v1/metrics</code>
+                <div class="mt-2">
+                    <button class="btn btn-sm btn-outline-secondary" onclick="fetchMetrics()">
+                        <i class="fas fa-play me-1"></i>Test API
+                    </button>
+                </div>
+                <div id="api-result" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function fetchMetrics() {
+    fetch('/api/v1/metrics')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('api-result').innerHTML = 
+                '<pre class="bg-light p-3 rounded">' + JSON.stringify(data, null, 2) + '</pre>';
+        })
+        .catch(error => {
+            document.getElementById('api-result').innerHTML = 
+                '<div class="alert alert-danger">Error fetching metrics: ' + error.message + '</div>';
+        });
+}
+</script>
+{% endblock %} 

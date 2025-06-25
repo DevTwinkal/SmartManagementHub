@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Plan - Smart Management Hub{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Edit Plan</h1>
+    <a href="{{ url_for('plans') }}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-2"></i>Back to Plans
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-body p-4">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Plan Name</label>
+                        <input type="text" class="form-control" id="name" name="name" 
+                               value="{{ plan.name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Price</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" id="price" name="price" 
+                                   step="0.01" min="0" value="{{ plan.price }}" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="billing_interval" class="form-label">Billing Interval</label>
+                        <select class="form-select" id="billing_interval" name="billing_interval" required>
+                            <option value="monthly" {% if plan.billing_interval == 'monthly' %}selected{% endif %}>Monthly</option>
+                            <option value="yearly" {% if plan.billing_interval == 'yearly' %}selected{% endif %}>Yearly</option>
+                        </select>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Update Plan
+                        </button>
+                        <a href="{{ url_for('plans') }}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -13,7 +13,7 @@ def register_route():
         password = request.form['password']
         
         if Business.query.filter_by(owner_email=owner_email).first():
-            flash('Email already registered')
+            flash('Email registered already. Please use a different email.')
             return render_template('register.html')
         
         business = Business(

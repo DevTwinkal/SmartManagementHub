@@ -25,6 +25,15 @@ login_manager.login_view = 'login'
 def load_user(user_id):
     return Business.query.get(int(user_id))
 
+def init_db():
+    """Initialize the database with tables"""
+    with app.app_context():
+        db.create_all()
+        print("Database tables created successfully!")
+
+# Initialize database on startup
+init_db()
+
 # Basic routes
 @app.route('/')
 def index():
@@ -117,6 +126,4 @@ def run_billing():
     return run_billing_route()
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(debug=True) 
